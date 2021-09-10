@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from "styled-components";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
-function App() {
+import LoginPage from "./LoginPage";
+import SignUpPage from "./assets/SignUpPage";
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppBody>
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' exact={true}>
+            <LoginPage/>
+          </Route>
+          <Route path='/cadastro'>
+            <SignUpPage/>
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </AppBody>
   );
 }
 
-export default App;
+const AppBody = styled.div`
+  box-sizing: padding-box;
+  display: flex;
+  justify-content: center;
+  font-family: 'Lexend Deca', sans-serif;
+  //font-family: 'Playball', cursive;
+`
