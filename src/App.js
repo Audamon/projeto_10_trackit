@@ -7,7 +7,8 @@ import LoginPage from "./LoginPage";
 import SignUpPage from "./assets/SignUpPage";
 import { useState } from "react";
 import Today from "./Today";
-
+import { HabitsButton } from "./TodayStyle";
+import Habits from "./Habits";
 export default function App() {
 
   const [user, setUser] = useState({})
@@ -25,6 +26,9 @@ export default function App() {
             </Route>
             <Route path='/hoje' exact={true}>
               <Today value={{user, setUser}}/>
+            </Route>
+            <Route to='/habitos' exact={true}>
+              <Habits  value={{user, setUser}}/>
             </Route>
           </Switch>
         </BrowserRouter>

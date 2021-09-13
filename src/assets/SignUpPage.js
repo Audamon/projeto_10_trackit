@@ -2,7 +2,7 @@ import styled from "styled-components";
 import logo from '../assets/logo.png';
 import { useState } from "react";
 import Loader from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Registry } from "../Service";
 
 export default function SignUpPage() {
@@ -12,7 +12,7 @@ export default function SignUpPage() {
     const [image, setImage] = useState('')
     const [loading, setLoading] = useState(true);
     const [signUpState, setSignUpState] = useState(false);
-
+    const history = useHistory();
     function registry() {
         setLoading(false)
         setSignUpState(false)
@@ -23,6 +23,7 @@ export default function SignUpPage() {
             password
         }
         Registry(body, setEmail, setName,setImage, setPassword, setLoading, setSignUpState)
+        history.push('/')
     }
 
     return (

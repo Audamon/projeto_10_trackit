@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/'
@@ -33,4 +34,16 @@ function Registry(body, setEmail, setName, setImage, setPassword, setLoading, se
     
 }
 
-export { Login, Registry };
+function ShowHabits(config){
+    const promise = axios.get(URL+'habits', config);
+    promise.catch(err => console.error);
+    return promise;
+}
+function CreateHabits(body, config){
+    
+    const promise = axios.post(URL+'habits',body,  config);
+    promise.catch(err => console.error)
+    return promise
+}
+
+export { Login, Registry, ShowHabits, CreateHabits };
