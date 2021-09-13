@@ -3,28 +3,36 @@ import logo from '../assets/logo.png';
 import { useState } from "react";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import { Registry } from "../Service";
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [photo, setPhoto] = useState('')
-    const [t, setT] = useState(1);
+    const [image, setImage] = useState('')
+    const [loading, setLoading] = useState(true);
     const [signUpState, setSignUpState] = useState(false);
 
     function registry() {
-        setT(0)
+        setLoading(false)
         setSignUpState(false)
+        const body = {
+            email,
+            name,
+            image,
+            password
+        }
+        Registry(body, setEmail, setName,setImage, setPassword, setLoading, setSignUpState)
     }
 
     return (
         <SignUpEntry>
             <IMG src={logo} alt='' />
-            <Input type='text' placeholder="  email" value={email} onChange={e => setEmail(e.target.value)} disabled={signUpState} backGroundColor={t === 1 ? '#ffffff' : '#f2f2f2'} color={t === 1 ? '#dbdbdb' : '#fafafa'}></Input>
-            <Input type='text' placeholder="  senha" value={password} onChange={e => setPassword(e.target.value)} disabled={signUpState} backGroundColor={t === 1 ? '#ffffff' : '#f2f2f2'} color={t === 1 ? '#dbdbdb' : '#fafafa'}></Input>
-            <Input type='text' placeholder="  nome" value={name} onChange={e => setName(e.target.value)} disabled={signUpState} backGroundColor={t === 1 ? '#ffffff' : '#f2f2f2'} color={t === 1 ? '#dbdbdb' : '#fafafa'}></Input>
-            <Input type='text' placeholder="  foto" value={photo} onChange={e => setPhoto(e.target.value)} disabled={signUpState} backGroundColor={t === 1 ? '#ffffff' : '#f2f2f2'} color={t === 1 ? '#dbdbdb' : '#fafafa'}></Input>
-            <SignUpButton onClick={registry} disabled={signUpState}>{t === 1 ? <>Cadastrar</> : <Loader type="ThreeDots" color="#FFFFFF" height={35} width={80} />}</SignUpButton>
+            <Input type='text' placeholder="  email" value={email} onChange={e => setEmail(e.target.value)} disabled={signUpState} backGroundColor={loading === true ? '#ffffff' : '#f2f2f2'} color={loading === true ? '#dbdbdb' : '#fafafa'}></Input>
+            <Input type='text' placeholder="  senha" value={password} onChange={e => setPassword(e.target.value)} disabled={signUpState} backGroundColor={loading === true ? '#ffffff' : '#f2f2f2'} color={loading === true ? '#dbdbdb' : '#fafafa'}></Input>
+            <Input type='text' placeholder="  nome" value={name} onChange={e => setName(e.target.value)} disabled={signUpState} backGroundColor={loading === true ? '#ffffff' : '#f2f2f2'} color={loading === true ? '#dbdbdb' : '#fafafa'}></Input>
+            <Input type='text' placeholder="  foto" value={image} onChange={e => setImage(e.target.value)} disabled={signUpState} backGroundColor={loading === true ? '#ffffff' : '#f2f2f2'} color={loading === true ? '#dbdbdb' : '#fafafa'}></Input>
+            <SignUpButton onClick={registry} disabled={signUpState}>{loading === true ? <>Cadastrar</> : <Loader type="ThreeDots" color="#FFFFFF" height={35} width={80} />}</SignUpButton>
             <Link to='/'>
                 <LoginLink>Já tem uma conta? Faça login!</LoginLink>
             </Link>

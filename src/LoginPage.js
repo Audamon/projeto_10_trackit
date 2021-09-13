@@ -1,36 +1,54 @@
 import styled from "styled-components";
 import logo from "./assets/logo.png";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useState, useContext,  } from "react";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import {Login} from './Service'
+import { Login } from './Service'
+import UserContext from "./Context/UserContent";
+
+
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-    const [t, setT] = useState(1)
+    const [loading, setLoading] = useState(true)
     const [loginState, setLoginState] = useState(false)
+    const {user, setUser}= useContext(UserContext);
+    const history = useHistory();
+    
+    function mudar() {
 
-    function mudar(){
-        setT(0);
+        setLoading(0);
         setLoginState(true)
-        const body={
-           email,
-           password 
-        };
-        Login(body, setT, setLoginState, setPassword, setEmail);
+        const body = {email,
+                      password
+                     };
+        const promise = Login(body, setLoading, setLoginState, setPassword, setEmail);
+        
+        promise.then(res=> {
+            setUser({...user, id: res.data.id,
+                              name: res.data.name,
+                              image: res.data.image,
+                              email: res.data.email,
+                              password: res.data.password,
+                              token: res.data.token})
+            history.push('/hoje')
+        })
+        
     }
     return (
+
         <LoginEntry>
             <IMG src={logo} alt='' />
-            <Input type="text" placeholder="  email" value={email} onChange={e => setEmail(e.target.value)} disabled={loginState} backGroundColor={t===1? '#ffffff': '#f2f2f2' } color={t===1? '#dbdbdb': '#fafafa' }></Input>
-            <Input type="text" placeholder="  senha" value={password} onChange={e => setPassword(e.target.value)} disabled={loginState} backGroundColor={t===1? '#ffffff': '#f2f2f2' } color={t===1? '#dbdbdb': '#fafafa' }></Input>
-            <LoginButton onClick={mudar}> {t===1? <>Entrar</> : <Loader type="ThreeDots" color="#FFFFFF" height={35} width={80} />}</LoginButton>
+            <Input type="text" placeholder="  email" value={email} onChange={e => setEmail(e.target.value)} disabled={loginState} backGroundColor={loading === true ? '#ffffff' : '#f2f2f2'} color={loading === true ? '#dbdbdb' : '#fafafa'}></Input>
+            <Input type="text" placeholder="  senha" value={password} onChange={e => setPassword(e.target.value)} disabled={loginState} backGroundColor={loading === true ? '#ffffff' : '#f2f2f2'} color={loading === true ? '#dbdbdb' : '#fafafa'}></Input>
+            <LoginButton onClick={mudar}> {loading === true ? <>Entrar</> : <Loader type="ThreeDots" color="#FFFFFF" height={35} width={80} />}</LoginButton>
             <Link to='/cadastro'>
                 <SignUpLink>Não tem uma conta? Cadastre-se!</SignUpLink>
             </Link>
         </LoginEntry>
+
     );
 }
 

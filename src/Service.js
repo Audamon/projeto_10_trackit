@@ -3,20 +3,34 @@ import axios from "axios";
 const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/'
 
 
-function Login(body, setT, setLoginState, setPassword, setEmail){
-    console.log(body)
-    const promise = axios.post(URL+'auth/login', body )
-    //promise.catch(console.error);
-    if(promise.catch()){
+function Login(body, setLoading, setLoginState, setPassword, setEmail) {
+    //console.log(body)
+    const promise = axios.post(URL + 'auth/login', body)
+    //promise.catch(err => console.log(err.response.status));
+    promise.catch(err => {
         alert("Dados invalidos!");
-        setT(1)
+        setLoading(true)
         setLoginState(false)
         setEmail("");
         setPassword("")
-    }
-    promise.then(res =>console.log(res.data))
-    
+    });
+    return promise
 
 }
 
-export {Login};
+function Registry(body, setEmail, setName, setImage, setPassword, setLoading, setSignUpState) {
+    const promise = axios.post(URL + 'auth/sign-up', body)
+    promise.catch(err=> {
+        alert('dados invalidos');
+        setPassword('');
+        setImage('');
+        setName('');
+        setEmail('');
+        setLoading(true);
+        setSignUpState(false);
+    });
+    promise.then(res => console.log(res));
+    
+}
+
+export { Login, Registry };
